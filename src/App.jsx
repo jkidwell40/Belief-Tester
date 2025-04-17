@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -20,59 +20,39 @@ export default function App() {
   const [coreBelief, setCoreBelief] = useState(null);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [modalStep, setModalStep] = useState('mode');
+  const [modalInput, setModalInput] = useState({ text: '', notes: '', confidence: 100 });
   const [suggestedBelief, setSuggestedBelief] = useState(null);
 
   const radius = 250;
   const angleIncrement = 360 / 20;
 
   useEffect(() => {
-  if (!mode) {
-    let selected = null;
-    while (!selected || (selected !== 'sandbox' && selected !== 'professional')) {
-      selected = prompt("Enter mode: sandbox or professional");
-      if (selected === null) return; // User cancelled — exit gracefully
-      selected = selected.toLowerCase();
+    if (mode && !coreBelief && modalStep !== 'core') {
+      setModalStep('core');
     }
-    setMode(selected);
-  }
-}, [mode]);
+  }, [mode, coreBelief, modalStep]);
 
-
-  const handleAddCoreBelief = () => {
-    let belief = null;
-    while (!belief) {
-      belief = prompt("Enter your core belief:");
-      if (belief === null) return; // user canceled
-    }
-
-    const notes = prompt("Optional: Enter core context notes:");
-    const confidence = 100;
+  const initializeCoreBelief = () => {
     const id = 'core';
-
-    const coreNode = {
+    const node = {
       id,
       type: 'beliefNode',
       position: { x: 400, y: 300 },
       data: {
-        label: belief,
-        notes,
-        confidence,
+        label: modalInput.text,
+        notes: modalInput.notes,
+        confidence: modalInput.confidence,
         core: true,
         status: 'core',
         mode
       },
       draggable: false
     };
-
-    setCoreBelief(coreNode);
-    setNodes([coreNode]);
+    setCoreBelief(node);
+    setNodes([node]);
+    setModalStep(null);
   };
-
-  useEffect(() => {
-    if (mode && !coreBelief) {
-      handleAddCoreBelief();
-    }
-  }, [mode, coreBelief]);
 
   const getUpstream = (nodeId, visited = new Set()) => {
     if (visited.has(nodeId)) return [];
@@ -82,11 +62,7 @@ export default function App() {
     return upstreamNodes.flatMap(n => [n.data.label, ...getUpstream(n.id, visited)]);
   };
 
-  const addBelief = async () => {
-    const belief = prompt("Enter your belief:");
-    const notes = prompt("Optional notes or justification:");
-    const confidence = parseInt(prompt("Confidence (0-100):"), 10);
-
+  const addBelief = async (text, notes, confidence) => {
     const id = uuidv4();
     const upstream = getUpstream('core');
     const coreLabel = coreBelief?.data?.label || '';
@@ -96,7 +72,7 @@ export default function App() {
       body: JSON.stringify({
         coreBeliefs: [coreLabel],
         upstreamBeliefs: upstream,
-        newBelief: belief,
+        newBelief: text,
         confidence,
         userNotes: notes
       })
@@ -112,7 +88,7 @@ export default function App() {
       type: 'beliefNode',
       position: { x, y },
       data: {
-        label: belief,
+        label: text,
         confidence,
         notes,
         status: result.status,
@@ -149,17 +125,44 @@ export default function App() {
 
   const handleAcceptSuggestion = () => {
     setSuggestedBelief(null);
-    addBelief(suggestedBelief);
+    addBelief(suggestedBelief, '', 50);
   };
 
-  if (!mode) {
-  return <div style={{ padding: 20, fontFamily: 'sans-serif' }}>Loading mode selection…</div>;
-}
-
-if (!coreBelief) {
-  return <div style={{ padding: 20, fontFamily: 'sans-serif' }}>Awaiting core belief input…</div>;
-}
-
+  if (!mode || !coreBelief) {
+    return (
+      <div style={{ padding: 20, fontFamily: 'sans-serif' }}>
+        {modalStep === 'mode' && (
+          <div>
+            <h3>Select Mode</h3>
+            <button onClick={() => { setMode('sandbox'); setModalStep('core'); }}>Sandbox</button>
+            <button onClick={() => { setMode('professional'); setModalStep('core'); }}>Professional</button>
+          </div>
+        )}
+        {modalStep === 'core' && (
+          <div>
+            <h3>Enter Core Belief</h3>
+            <input
+              placeholder="Core belief"
+              value={modalInput.text}
+              onChange={(e) => setModalInput({ ...modalInput, text: e.target.value })}
+            />
+            <textarea
+              placeholder="Context or notes"
+              value={modalInput.notes}
+              onChange={(e) => setModalInput({ ...modalInput, notes: e.target.value })}
+            />
+            <input
+              type="range"
+              min={0} max={100}
+              value={modalInput.confidence}
+              onChange={(e) => setModalInput({ ...modalInput, confidence: parseInt(e.target.value) })}
+            />
+            <button onClick={initializeCoreBelief}>Enter</button>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
@@ -167,12 +170,16 @@ if (!coreBelief) {
         <div className="watermark"><div className="watermark-text">PRACTICE MODE</div></div>
       )}
 
-      <button onClick={addBelief} style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}>
+      <button
+        onClick={() => setModalStep('add')}
+        style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}>
         Add Belief
       </button>
 
       {mode === 'sandbox' && (
-        <button onClick={handleSuggest} style={{ position: 'fixed', top: 10, left: 120, zIndex: 1000 }}>
+        <button
+          onClick={handleSuggest}
+          style={{ position: 'fixed', top: 10, left: 120, zIndex: 1000 }}>
           Suggest Belief (AI)
         </button>
       )}
@@ -182,6 +189,29 @@ if (!coreBelief) {
           <div><strong>AI Suggests:</strong> {suggestedBelief}</div>
           <button onClick={handleAcceptSuggestion}>Accept</button>
           <button onClick={() => setSuggestedBelief(null)}>Dismiss</button>
+        </div>
+      )}
+
+      {modalStep === 'add' && (
+        <div style={{ position: 'fixed', top: 100, left: 100, background: 'white', padding: 10, zIndex: 2000 }}>
+          <h4>Add Belief</h4>
+          <input
+            placeholder="Your belief"
+            value={modalInput.text}
+            onChange={(e) => setModalInput({ ...modalInput, text: e.target.value })}
+          />
+          <textarea
+            placeholder="Notes or justification"
+            value={modalInput.notes}
+            onChange={(e) => setModalInput({ ...modalInput, notes: e.target.value })}
+          />
+          <input
+            type="range"
+            min={0} max={100}
+            value={modalInput.confidence}
+            onChange={(e) => setModalInput({ ...modalInput, confidence: parseInt(e.target.value) })}
+          />
+          <button onClick={() => { addBelief(modalInput.text, modalInput.notes, modalInput.confidence); setModalStep(null); }}>Enter</button>
         </div>
       )}
 
