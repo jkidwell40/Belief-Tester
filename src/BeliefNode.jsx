@@ -4,6 +4,9 @@ import { Handle, Position } from 'reactflow';
 export default function BeliefNode({ id, data }) {
   const [expanded, setExpanded] = useState(false);
 
+  if (!data) return null;
+
+  const status = data.status || 'pending';
   const nodeStyle = {
     padding: 10,
     border: '2px solid black',
@@ -12,25 +15,23 @@ export default function BeliefNode({ id, data }) {
     minWidth: 200,
     cursor: 'pointer',
     borderColor:
-      data.status === 'coherent' ? 'green' :
-      data.status === 'contradictory' ? 'yellow' :
-      data.status === 'harmful' ? 'red' :
-      data.status === 'incoherent' ? 'brown' : 'gray'
-  };
-
-  const handleToggle = () => {
-    setExpanded(!expanded);
+      status === 'coherent' ? 'green' :
+      status === 'contradictory' ? 'yellow' :
+      status === 'harmful' ? 'red' :
+      status === 'incoherent' ? 'brown' :
+      'gray'
   };
 
   return (
-    <div onClick={handleToggle} style={nodeStyle}>
-      <div><strong>{data?.label || 'Untitled Belief'}</strong></div>
-{expanded && data?.aiSummary && (
-  <div style={{ marginTop: 8 }}>
-    <div><strong>TL;DR:</strong> {data.aiSummary?.summary || 'No summary provided.'}</div>
-    <div style={{ marginTop: 6 }}><strong>Details:</strong> {data.aiSummary?.details || 'No details available.'}</div>
-  </div>
-)}
+    <div style={nodeStyle} onClick={() => setExpanded(!expanded)}>
+      <div><strong>{data?.label || 'Unnamed Belief'}</strong></div>
+
+      {expanded && data?.aiSummary && (
+        <div style={{ marginTop: 8 }}>
+          <div><strong>TL;DR:</strong> {data.aiSummary?.summary || '—'}</div>
+          <div style={{ marginTop: 6 }}><strong>Details:</strong> {data.aiSummary?.details || '—'}</div>
+        </div>
+      )}
 
       <Handle type="target" position={Position.Top} />
       <Handle type="source" position={Position.Bottom} />
