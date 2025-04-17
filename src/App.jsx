@@ -152,7 +152,14 @@ export default function App() {
     addBelief(suggestedBelief);
   };
 
-  if (!mode || !coreBelief) return null;
+  if (!mode) {
+  return <div style={{ padding: 20, fontFamily: 'sans-serif' }}>Loading mode selection…</div>;
+}
+
+if (!coreBelief) {
+  return <div style={{ padding: 20, fontFamily: 'sans-serif' }}>Awaiting core belief input…</div>;
+}
+
 
   return (
     <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
