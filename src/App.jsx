@@ -114,7 +114,7 @@ export default function App() {
 
     setNodes((prev) => [...prev, newNode]);
     setEdges((prev) => [...prev, {
-      id: \`\${coreBelief.id}->\${id}\`,
+      id: `${coreBelief.id}->${id}`,
       source: coreBelief.id,
       target: id,
       style: {
