@@ -33,24 +33,36 @@ export default function App() {
     }
   }, [mode]);
 
-  const handleAddCoreBelief = () => {
-    const belief = prompt("Enter your core belief:");
-    const notes = prompt("Optional: Enter core context notes:");
-    const confidence = 100;
-    const id = 'core';
+ const handleAddCoreBelief = () => {
+  let belief = null;
+  while (!belief) {
+    belief = prompt("Enter your core belief:");
+    if (belief === null) return; // user canceled
+  }
 
-    const coreNode = {
-      id,
-      type: 'beliefNode',
-      position: { x: 400, y: 300 },
-      data: {
-        label: belief,
-        notes,
-        confidence,
-        core: true,
-        status: 'core',
-        mode
-      },
+  const notes = prompt("Optional: Enter core context notes:");
+  const confidence = 100;
+  const id = 'core';
+
+  const coreNode = {
+    id,
+    type: 'beliefNode',
+    position: { x: 400, y: 300 },
+    data: {
+      label: belief,
+      notes,
+      confidence,
+      core: true,
+      status: 'core',
+      mode
+    },
+    draggable: false
+  };
+
+  setCoreBelief(coreNode);
+  setNodes([coreNode]);
+};
+
       draggable: false
     };
     setCoreBelief(coreNode);
