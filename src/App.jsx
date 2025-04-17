@@ -26,11 +26,17 @@ export default function App() {
   const angleIncrement = 360 / 20;
 
   useEffect(() => {
-    if (!mode) {
-      const selected = prompt("Enter mode: sandbox or professional").toLowerCase();
-      setMode(selected === 'professional' ? 'professional' : 'sandbox');
+  if (!mode) {
+    let selected = null;
+    while (!selected || (selected !== 'sandbox' && selected !== 'professional')) {
+      selected = prompt("Enter mode: sandbox or professional");
+      if (selected === null) return; // User cancelled — exit gracefully
+      selected = selected.toLowerCase();
     }
-  }, [mode]);
+    setMode(selected);
+  }
+}, [mode]);
+
 
   const handleAddCoreBelief = () => {
     let belief = null;
