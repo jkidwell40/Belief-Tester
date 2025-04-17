@@ -1,0 +1,21 @@
+{
+  "name": "epistemic-coherence-app",
+  "version": "1.0.0",
+  "description": "Belief Mapping Web App with Epistemic Integrity",
+  "main": "src/App.jsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "reactflow": "^11.7.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0",
+    "@vitejs/plugin-react": "^4.0.0"
+  }
+}
