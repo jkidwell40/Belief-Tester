@@ -24,13 +24,14 @@ export default function BeliefNode({ id, data }) {
 
   return (
     <div onClick={handleToggle} style={nodeStyle}>
-      <div><strong>{data.label}</strong></div>
-      {expanded && data.aiSummary && (
-        <div style={{ marginTop: 8 }}>
-          <div><strong>TL;DR:</strong> {data.aiSummary.summary}</div>
-          <div style={{ marginTop: 6 }}><strong>Details:</strong> {data.aiSummary.details}</div>
-        </div>
-      )}
+      <div><strong>{data?.label || 'Untitled Belief'}</strong></div>
+{expanded && data?.aiSummary && (
+  <div style={{ marginTop: 8 }}>
+    <div><strong>TL;DR:</strong> {data.aiSummary?.summary || 'No summary provided.'}</div>
+    <div style={{ marginTop: 6 }}><strong>Details:</strong> {data.aiSummary?.details || 'No details available.'}</div>
+  </div>
+)}
+
       <Handle type="target" position={Position.Top} />
       <Handle type="source" position={Position.Bottom} />
     </div>
