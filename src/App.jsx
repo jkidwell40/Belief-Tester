@@ -12,7 +12,6 @@ import 'reactflow/dist/style.css';
 import { v4 as uuidv4 } from 'uuid';
 
 import BeliefNode from './BeliefNode.jsx';
-import { analyzeBelief, suggestBelief } from './claude.js';
 
 const nodeTypes = { beliefNode: BeliefNode };
 
