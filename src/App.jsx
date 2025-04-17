@@ -22,7 +22,6 @@ export default function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [suggestedBelief, setSuggestedBelief] = useState(null);
 
-  // Layout helpers
   const radius = 250;
   const angleIncrement = 360 / 20;
 
@@ -33,38 +32,32 @@ export default function App() {
     }
   }, [mode]);
 
- const handleAddCoreBelief = () => {
-  let belief = null;
-  while (!belief) {
-    belief = prompt("Enter your core belief:");
-    if (belief === null) return; // user canceled
-  }
+  const handleAddCoreBelief = () => {
+    let belief = null;
+    while (!belief) {
+      belief = prompt("Enter your core belief:");
+      if (belief === null) return; // user canceled
+    }
 
-  const notes = prompt("Optional: Enter core context notes:");
-  const confidence = 100;
-  const id = 'core';
+    const notes = prompt("Optional: Enter core context notes:");
+    const confidence = 100;
+    const id = 'core';
 
-  const coreNode = {
-    id,
-    type: 'beliefNode',
-    position: { x: 400, y: 300 },
-    data: {
-      label: belief,
-      notes,
-      confidence,
-      core: true,
-      status: 'core',
-      mode
-    },
-    draggable: false
-  };
-
-  setCoreBelief(coreNode);
-  setNodes([coreNode]);
-};
-
+    const coreNode = {
+      id,
+      type: 'beliefNode',
+      position: { x: 400, y: 300 },
+      data: {
+        label: belief,
+        notes,
+        confidence,
+        core: true,
+        status: 'core',
+        mode
+      },
       draggable: false
     };
+
     setCoreBelief(coreNode);
     setNodes([coreNode]);
   };
