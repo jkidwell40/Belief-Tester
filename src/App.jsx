@@ -167,10 +167,11 @@ export default function App() {
   return (
     <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
       {mode === 'sandbox' && (
-  <div className="watermark">
-    <div className="watermark-text" />
-  </div>
-)}
+ <div className="watermark">
+  {Array.from({ length: 50 }).map((_, i) => (
+    <div key={i} className="watermark-text">SANDBOX MODE</div>
+  ))}
+</div>
 
       <button
         onClick={() => setModalStep('add')}
