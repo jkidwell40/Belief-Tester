@@ -1,3 +1,42 @@
 body {
   font-family: sans-serif;
 }
+.watermark {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0; /* Ensures it's below all buttons, nodes, etc. */
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.03) 0,
+    rgba(0, 0, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 40px
+  ),
+  repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.03) 0,
+    rgba(0, 0, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 40px
+  );
+}
+
+.watermark-text::before {
+  content: "PRACTICE MODE";
+  font-size: 40px;
+  color: rgba(0, 0, 0, 0.05);
+  font-weight: bold;
+  position: absolute;
+  white-space: nowrap;
+  transform: rotate(-30deg);
+  animation: watermark-fade 10s linear infinite;
+}
+
+@keyframes watermark-fade {
+  0% { transform: rotate(-30deg) translateY(0); }
+  100% { transform: rotate(-30deg) translateY(-100%); }
+}
