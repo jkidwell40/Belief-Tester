@@ -8,35 +8,21 @@ body {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 0; /* Ensures it's below all buttons, nodes, etc. */
-  background-image: repeating-linear-gradient(
-    45deg,
-    rgba(0, 0, 0, 0.03) 0,
-    rgba(0, 0, 0, 0.03) 1px,
-    transparent 1px,
-    transparent 40px
-  ),
-  repeating-linear-gradient(
-    -45deg,
-    rgba(0, 0, 0, 0.03) 0,
-    rgba(0, 0, 0, 0.03) 1px,
-    transparent 1px,
-    transparent 40px
-  );
+  z-index: 10; /* above background, below UI buttons */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-content: space-evenly;
+  background: transparent;
 }
 
-.watermark-text::before {
-  content: "PRACTICE MODE";
-  font-size: 40px;
-  color: rgba(0, 0, 0, 0.05);
+.watermark-text {
+  font-size: 32px;
   font-weight: bold;
-  position: absolute;
-  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.05);
   transform: rotate(-30deg);
-  animation: watermark-fade 10s linear infinite;
+  user-select: none;
+  margin: 40px;
+  white-space: nowrap;
 }
 
-@keyframes watermark-fade {
-  0% { transform: rotate(-30deg) translateY(0); }
-  100% { transform: rotate(-30deg) translateY(-100%); }
-}
