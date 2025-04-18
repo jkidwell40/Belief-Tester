@@ -173,11 +173,12 @@ export default function App() {
   ))}
 </div>
 
-      <button>
-        onClick={() => setModalStep('add')}
-        style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}>
-        Add Belief
-      </button>
+      <button
+  onClick={() => setModalStep('add')}
+  style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
+>
+  Add Belief
+</button>
 
       {mode === 'sandbox' && (
         <button
