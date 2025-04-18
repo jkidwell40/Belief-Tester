@@ -172,8 +172,8 @@ export default function App() {
     <div key={i} className="watermark-text">SANDBOX MODE</div>
   ))}
 </div>
-
-     <button
+)}
+    <button
   onClick={() => setModalStep('add')}
   style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
 >
