@@ -167,8 +167,10 @@ export default function App() {
   return (
     <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
       {mode === 'sandbox' && (
-        <div className="watermark"><div className="watermark-text">PRACTICE MODE</div></div>
-      )}
+  <div className="watermark">
+    <div className="watermark-text" />
+  </div>
+)}
 
       <button
         onClick={() => setModalStep('add')}
