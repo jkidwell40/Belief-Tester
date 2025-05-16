@@ -173,40 +173,7 @@ export default function App() {
   ))}
 </div>
 )}
-    <button
-  onClick={() => setModalStep('add')}
-  style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
->
-  Add Belief
-</button>
-
-      {mode === 'sandbox' && (
-      <>
-  <button
-    onClick={() => setModalStep('add')}
-    style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
-  >
-    Add Belief
-  </button>
-)}
-
-      {mode === 'sandbox' && (
-  <>
-    <button
-      onClick={() => setModalStep('add')}
-      style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
-    >
-      Add Belief
-    </button>
-
-    <button
-      onClick={handleSuggest}
-      style={{ position: 'fixed', top: 10, left: 120, zIndex: 1000 }}
-    >
-      Suggest Belief (AI)
-    </button>
-  </>
-)}
+    <
 
       {modalStep === 'add' && (
         <div style={{ position: 'fixed', top: 100, left: 100, background: 'white', padding: 10, zIndex: 2000 }}>
@@ -230,6 +197,24 @@ export default function App() {
           <button onClick={() => { addBelief(modalInput.text, modalInput.notes, modalInput.confidence); setModalStep(null); }}>Enter</button>
         </div>
       )}
+
+      {mode === 'sandbox' && (
+  <>
+    <button
+      onClick={() => setModalStep('add')}
+      style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
+    >
+      Add Belief
+    </button>
+
+    <button
+      onClick={handleSuggest}
+      style={{ position: 'fixed', top: 10, left: 120, zIndex: 1000 }}
+    >
+      Suggest Belief (AI)
+    </button>
+  </>
+)}
 
       <ReactFlowProvider>
         <ReactFlow
