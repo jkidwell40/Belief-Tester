@@ -181,6 +181,15 @@ export default function App() {
 </button>
 
       {mode === 'sandbox' && (
+  <button
+    onClick={() => setModalStep('add')}
+    style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
+  >
+    Add Belief
+  </button>
+)}
+
+      {mode === 'sandbox' && (
         <button
           onClick={handleSuggest}
           style={{ position: 'fixed', top: 10, left: 120, zIndex: 1000 }}>
