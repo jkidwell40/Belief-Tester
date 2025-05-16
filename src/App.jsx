@@ -173,7 +173,6 @@ export default function App() {
   ))}
 </div>
 )}
-    <
 
       {modalStep === 'add' && (
         <div style={{ position: 'fixed', top: 100, left: 100, background: 'white', padding: 10, zIndex: 2000 }}>
