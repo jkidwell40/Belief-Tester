@@ -181,6 +181,7 @@ export default function App() {
 </button>
 
       {mode === 'sandbox' && (
+      <>
   <button
     onClick={() => setModalStep('add')}
     style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
@@ -190,20 +191,22 @@ export default function App() {
 )}
 
       {mode === 'sandbox' && (
-        <button
-          onClick={handleSuggest}
-          style={{ position: 'fixed', top: 10, left: 120, zIndex: 1000 }}>
-          Suggest Belief (AI)
-        </button>
-      )}
+  <>
+    <button
+      onClick={() => setModalStep('add')}
+      style={{ position: 'fixed', top: 10, left: 10, zIndex: 1000 }}
+    >
+      Add Belief
+    </button>
 
-      {suggestedBelief && (
-        <div style={{ position: 'fixed', top: 60, left: 120, background: 'white', zIndex: 1000, padding: 10 }}>
-          <div><strong>AI Suggests:</strong> {suggestedBelief}</div>
-          <button onClick={handleAcceptSuggestion}>Accept</button>
-          <button onClick={() => setSuggestedBelief(null)}>Dismiss</button>
-        </div>
-      )}
+    <button
+      onClick={handleSuggest}
+      style={{ position: 'fixed', top: 10, left: 120, zIndex: 1000 }}
+    >
+      Suggest Belief (AI)
+    </button>
+  </>
+)}
 
       {modalStep === 'add' && (
         <div style={{ position: 'fixed', top: 100, left: 100, background: 'white', padding: 10, zIndex: 2000 }}>
